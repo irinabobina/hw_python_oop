@@ -75,31 +75,30 @@ class CashCalculator(Calculator):
         else: 
             return (f'Денег нет, держись: твой долг - {abs(N):.2f} {cur}')
 
-    
+if __name__ == "__main__":
+    cash_calculator = CashCalculator(1000)
+    calories_calculator = CaloriesCalculator(2500)
  
-cash_calculator = CashCalculator(1000)
-calories_calculator = CaloriesCalculator(2500)
+    r1 = Record(amount=145, comment="Безудержный шопинг", date="16.07.2020")
+    r2 = Record(amount=1545, comment="Наполнение потребительской корзины", date="16.07.2020")
+    r3 = Record(amount=791, comment="Катание на такси", date="15.07.2020")
  
-r1 = Record(amount=145, comment="Безудержный шопинг", date="16.07.2020")
-r2 = Record(amount=1545, comment="Наполнение потребительской корзины", date="16.07.2020")
-r3 = Record(amount=791, comment="Катание на такси", date="15.07.2020")
- 
-cash_calculator.add_record(r1)
-cash_calculator.add_record(r2)
-cash_calculator.add_record(r3)
+    cash_calculator.add_record(r1)
+    cash_calculator.add_record(r2)
+    cash_calculator.add_record(r3)
 
-r4 = Record(amount=1500, comment="Кусок тортика. И ещё один.", date="16.07.2020")
-r5 = Record(amount=84, comment="Йогурт.")
-r6 = Record(amount=1140, comment="Баночка чипсов.", date="16.07.2020")
+    r4 = Record(amount=1500, comment="Кусок тортика. И ещё один.", date="16.07.2020")
+    r5 = Record(amount=84, comment="Йогурт.")
+    r6 = Record(amount=1140, comment="Баночка чипсов.", date="16.07.2020")
 
-calories_calculator.add_record(r4)
-calories_calculator.add_record(r5)
-calories_calculator.add_record(r6)
+    calories_calculator.add_record(r4)
+    calories_calculator.add_record(r5)
+    calories_calculator.add_record(r6)
 
  
-print(cash_calculator.get_today_stats())
-print(cash_calculator.get_week_stats())
-print(cash_calculator.get_today_cash_remained('eur'))
-print(calories_calculator.get_calories_remained())
-print(calories_calculator.get_week_stats())
-print(calories_calculator.get_today_stats())
+    print(cash_calculator.get_today_stats())
+    print(cash_calculator.get_week_stats())
+    print(cash_calculator.get_today_cash_remained('eur'))
+    print(calories_calculator.get_calories_remained())
+    print(calories_calculator.get_week_stats())
+    print(calories_calculator.get_today_stats())
