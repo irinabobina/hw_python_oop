@@ -8,17 +8,17 @@ class Calculator:
     def add_record(self, rec):
         self.records.append(rec)
  
-    def get_today_stats(self):
-        daysum = 0
-        for i in self.records:
-            if i.date == dt.datetime.now().date():
-                daysum = daysum + i.amount
-        return daysum 
+    def get_today_stats(self): 
+        daysum = 0 
+        for i in self.records: 
+            if i.date == dt.date.today(): 
+                daysum = daysum + i.amount 
+        return daysum  
         
     def get_week_stats(self):
         week_cash = 0
-        week_ago = dt.datetime.now().date() - dt.timedelta(days=7)
-        now = dt.datetime.now().date()
+        week_ago = dt.date.today() - dt.timedelta(days=6)
+        now = dt.date.today()
         for i in self.records:
             if week_ago <= i.date <= now:
                 week_cash = week_cash + i.amount 
@@ -32,7 +32,7 @@ class Record:
         self.amount = amount
         self.comment = comment
         if date == '':
-            self.date = dt.datetime.now().date()
+            self.date = dt.date.today()
         else:
             self.date = dt.datetime.strptime(date, '%d.%m.%Y').date()
 
