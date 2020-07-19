@@ -15,7 +15,7 @@ class Calculator:
                 daysum = daysum + i.amount
         return daysum 
         
-    def get_week_stats(self):
+    #def get_week_stats(self):
         week_cash = 0
         week_ago = dt.datetime.now().date() - dt.timedelta(days=7)
         now = dt.datetime.now().date()
