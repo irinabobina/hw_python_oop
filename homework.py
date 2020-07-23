@@ -11,18 +11,20 @@ class Calculator:
  
     def get_today_stats(self): 
         daysum = 0 
+        datetoday = dt.date.today()
         for i in self.records: 
-            if i.date == dt.date.today(): 
+            if i.date == datetoday: 
                 daysum = daysum + i.amount 
         return daysum  
 
     def get_week_stats(self):
         week_cash = 0
-        week_ago = dt.date.today() - dt.timedelta(days=6)
+        now = dt.date.today()
+        week_ago = now - dt.timedelta(days=6)
         now = dt.date.today()
         for i in self.records:
             if week_ago <= i.date <= now:
-                week_cash = week_cash + i.amount 
+                week_cash += i.amount 
         return week_cash
 
     def today_remained(self):
@@ -47,63 +49,62 @@ class CaloriesCalculator(Calculator):
         calories_remained = self.today_remained()
 
         if calories_remained > 0:
-            a = ('Сегодня можно съесть что-нибудь ещё, но' 
+            return ('Сегодня можно съесть что-нибудь ещё, но' 
                 f' с общей калорийностью не более {calories_remained} кКал')
         else:
-            a = 'Хватит есть!'
-        return a
+            return ('Хватит есть!')
 
 
 class CashCalculator(Calculator):
     EURO_RATE = 81.41
     USD_RATE = 71.21
 
-    currencies = {
-        'rub': 'руб',
-        'eur': 'Euro',
-        'usd': 'USD'
-    }
-
     def get_today_cash_remained(self, currency):
         cash_remained = self.today_remained()
 
-        if currency not in CashCalculator.currencies:
-            M = 'Незнакомая валюта'
-            return M
+        currencies = {
+        'rub': ['руб', 1],
+        'eur': ['Euro', CashCalculator.EURO_RATE],
+        'usd': ['USD', CashCalculator.USD_RATE]
+    }
 
-        today_currency = CashCalculator.currencies[currency]
+        if cash_remained == 0:
+            return ('Денег нет, держись')
 
-        if currency == 'rub':
-            N = cash_remained
-        elif currency == 'usd':
-            N = cash_remained/CashCalculator.USD_RATE
-        elif currency == 'eur':
-            N = cash_remained/CashCalculator.EURO_RATE
+        if currency not in currencies:
+            return ('Незнакомая валюта')
+
+        if currency in currencies:
+            N = cash_remained/currencies[currency][1]
+        #if today_currency == 'rub':
+            #N = cash_remained
+        #elif today_currency == 'usd':
+           # N = cash_remained/CashCalculator.USD_RATE
+        #elif today_currency == 'eur':
+            #N = cash_remained/CashCalculator.EURO_RATE
 
         if cash_remained > 0: 
-            return (f'На сегодня осталось {N:.2f} {today_currency}') 
-        elif cash_remained == 0:
-            return ('Денег нет, держись')
+            return (f'На сегодня осталось {N:.2f} {currencies[currency][0]}')  
         else: 
-            K = abs(N)
+            minus_number = abs(N)
             return (f'Денег нет, держись:'
-            f' твой долг - {K:.2f} {today_currency}')
+            f' твой долг - {minus_number:.2f} {currencies[currency][0]}')
 
 if __name__ == "__main__":
     cash_calculator = CashCalculator(1000)
     calories_calculator = CaloriesCalculator(2500)
  
-    r1 = Record(amount=145, comment="Безудержный шопинг", date="23.07.2020")
-    r2 = Record(amount=1545, comment="Корзина", date="23.07.2020")
-    r3 = Record(amount=791, comment="Катание на такси", date="22.07.2020")
+    r1 = Record(amount=145, comment='Безудержный шопинг', date='23.07.2020')
+    r2 = Record(amount=1545, comment='Корзина', date='23.07.2020')
+    r3 = Record(amount=791, comment='Катание на такси', date='22.07.2020')
  
     cash_calculator.add_record(r1)
     cash_calculator.add_record(r2)
     cash_calculator.add_record(r3)
 
-    r4 = Record(amount=1500, comment="Тортик", date="23.07.2020")
-    r5 = Record(amount=84, comment="Йогурт.")
-    r6 = Record(amount=1140, comment="Баночка чипсов.", date="23.07.2020")
+    r4 = Record(amount=1500, comment='Тортик', date='23.07.2020')
+    r5 = Record(amount=84, comment='Йогурт.')
+    r6 = Record(amount=1140, comment='Баночка чипсов.', date='23.07.2020')
 
     calories_calculator.add_record(r4)
     calories_calculator.add_record(r5)
