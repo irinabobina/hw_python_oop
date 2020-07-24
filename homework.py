@@ -1,6 +1,6 @@
 import datetime as dt
- 
- 
+
+
 class Calculator:
     def __init__(self, limit):
         self.limit = limit
@@ -8,14 +8,14 @@ class Calculator:
 
     def add_record(self, rec):
         self.records.append(rec)
- 
-    def get_today_stats(self): 
-        daysum = 0 
+
+    def get_today_stats(self):
+        daysum = 0
         datetoday = dt.date.today()
-        for i in self.records: 
-            if i.date == datetoday: 
-                daysum = daysum + i.amount 
-        return daysum  
+        for i in self.records:
+            if i.date == datetoday:
+                daysum = daysum + i.amount
+        return daysum
 
     def get_week_stats(self):
         week_cash = 0
@@ -24,7 +24,7 @@ class Calculator:
         now = dt.date.today()
         for i in self.records:
             if week_ago <= i.date <= now:
-                week_cash += i.amount 
+                week_cash += i.amount
         return week_cash
 
     def today_remained(self):
@@ -46,11 +46,11 @@ class Record:
 
 class CaloriesCalculator(Calculator):
     def get_calories_remained(self):
-        calories_remained = self.today_remained()
+        cals_remained = self.today_remained()
 
-        if calories_remained > 0:
-            return ('Сегодня можно съесть что-нибудь ещё, но' 
-                f' с общей калорийностью не более {calories_remained} кКал')
+        if cals_remained > 0:
+            return ('Сегодня можно съесть что-нибудь ещё, но'
+                    f' с общей калорийностью не более {cals_remained} кКал')
         else:
             return ('Хватит есть!')
 
@@ -63,10 +63,10 @@ class CashCalculator(Calculator):
         cash_remained = self.today_remained()
 
         currencies = {
-        'rub': ['руб', 1],
-        'eur': ['Euro', CashCalculator.EURO_RATE],
-        'usd': ['USD', CashCalculator.USD_RATE]
-    }
+            'rub': ['руб', 1],
+            'eur': ['Euro', CashCalculator.EURO_RATE],
+            'usd': ['USD', CashCalculator.USD_RATE]
+        }
 
         if cash_remained == 0:
             return ('Денег нет, держись')
@@ -76,28 +76,23 @@ class CashCalculator(Calculator):
 
         if currency in currencies:
             N = cash_remained/currencies[currency][1]
-        #if today_currency == 'rub':
-            #N = cash_remained
-        #elif today_currency == 'usd':
-           # N = cash_remained/CashCalculator.USD_RATE
-        #elif today_currency == 'eur':
-            #N = cash_remained/CashCalculator.EURO_RATE
 
-        if cash_remained > 0: 
-            return (f'На сегодня осталось {N:.2f} {currencies[currency][0]}')  
-        else: 
-            minus_number = abs(N)
+        if cash_remained > 0:
+            return (f'На сегодня осталось {N:.2f} {currencies[currency][0]}')
+        else:
+            minus_n = abs(N)
             return (f'Денег нет, держись:'
-            f' твой долг - {minus_number:.2f} {currencies[currency][0]}')
+                    f' твой долг - {minus_n:.2f} {currencies[currency][0]}')
+
 
 if __name__ == "__main__":
     cash_calculator = CashCalculator(1000)
     calories_calculator = CaloriesCalculator(2500)
- 
+
     r1 = Record(amount=145, comment='Безудержный шопинг', date='23.07.2020')
     r2 = Record(amount=1545, comment='Корзина', date='23.07.2020')
     r3 = Record(amount=791, comment='Катание на такси', date='22.07.2020')
- 
+
     cash_calculator.add_record(r1)
     cash_calculator.add_record(r2)
     cash_calculator.add_record(r3)
