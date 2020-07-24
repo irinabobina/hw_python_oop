@@ -24,7 +24,7 @@ class Calculator:
         now = dt.date.today()
         for i in self.records:
             if week_ago <= i.date <= now:
-                week_cash += i.amount
+                week_cash += i.amount  # sum(week_cash, i.amount) не работает
         return week_cash
 
     def today_remained(self):
