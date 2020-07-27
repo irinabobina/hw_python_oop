@@ -80,7 +80,7 @@ class CashCalculator(Calculator):
         cur_name = currencies[currency][0]
 
         if cash_remained > 0:
-            return (f'На сегодня осталось {now_cash:.2f} {cur_name}')
+            return f'На сегодня осталось {now_cash:.2f} {cur_name}'
 
         minus_n = abs(now_cash)
         return ('Денег нет, держись:'
