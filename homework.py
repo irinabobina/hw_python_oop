@@ -10,12 +10,12 @@ class Calculator:
         self.records.append(rec)
 
     def get_today_stats(self):
-        daysum = 0
+        day_sum = 0
         datetoday = dt.date.today()
         for i in self.records:
             if i.date == datetoday:
-                daysum = daysum + i.amount
-        return daysum
+                day_sum += i.amount
+        return day_sum
 
     def get_week_stats(self):
         week_cash = 0
@@ -24,14 +24,14 @@ class Calculator:
         now = dt.date.today()
         for i in self.records:
             if week_ago <= i.date <= now:
-                week_cash += i.amount  # sum(week_cash, i.amount) не работает
+                week_cash += i.amount  
         return week_cash
 
     def today_remained(self):
-        todaysum = self.get_today_stats()
+        today_sum = self.get_today_stats()
         lim = self.limit
-        todayremained = lim - todaysum
-        return todayremained
+        today_rem = lim - today_sum
+        return today_rem
 
 
 class Record:
@@ -51,8 +51,8 @@ class CaloriesCalculator(Calculator):
         if cals_remained > 0:
             return ('Сегодня можно съесть что-нибудь ещё, но'
                     f' с общей калорийностью не более {cals_remained} кКал')
-        else:
-            return ('Хватит есть!')
+    
+        return 'Хватит есть!'
 
 
 class CashCalculator(Calculator):
@@ -62,44 +62,46 @@ class CashCalculator(Calculator):
     def get_today_cash_remained(self, currency):
         cash_remained = self.today_remained()
 
+        if cash_remained == 0:
+            return 'Денег нет, держись'
+
         currencies = {
             'rub': ['руб', 1],
             'eur': ['Euro', CashCalculator.EURO_RATE],
             'usd': ['USD', CashCalculator.USD_RATE]
         }
 
-        if cash_remained == 0:
-            return ('Денег нет, держись')
-
         if currency not in currencies:
-            return ('Незнакомая валюта')
+            return 'Незнакомая валюта'
 
         if currency in currencies:
-            N = cash_remained/currencies[currency][1]
-
+            now_cash = cash_remained/currencies[currency][1]
+        
+        prt_dict = [currencies[currency][0]]
+        
         if cash_remained > 0:
-            return (f'На сегодня осталось {N:.2f} {currencies[currency][0]}')
-        else:
-            minus_n = abs(N)
-            return (f'Денег нет, держись:'
-                    f' твой долг - {minus_n:.2f} {currencies[currency][0]}')
+            return f'На сегодня осталось {now_cash:.2f} {prt_dict}'
+
+        minus_n = abs(now_cash)
+        return ('Денег нет, держись:'
+                f' твой долг - {minus_n:.2f} {prt_dict}')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     cash_calculator = CashCalculator(1000)
     calories_calculator = CaloriesCalculator(2500)
 
-    r1 = Record(amount=145, comment='Безудержный шопинг', date='23.07.2020')
-    r2 = Record(amount=1545, comment='Корзина', date='23.07.2020')
-    r3 = Record(amount=791, comment='Катание на такси', date='22.07.2020')
+    r1 = Record(amount=145, comment='Безудержный шопинг', date='27.07.2020')
+    r2 = Record(amount=1545, comment='Корзина', date='27.07.2020')
+    r3 = Record(amount=791, comment='Катание на такси', date='27.07.2020')
 
     cash_calculator.add_record(r1)
     cash_calculator.add_record(r2)
     cash_calculator.add_record(r3)
 
-    r4 = Record(amount=1500, comment='Тортик', date='23.07.2020')
+    r4 = Record(amount=1500, comment='Тортик', date='27.07.2020')
     r5 = Record(amount=84, comment='Йогурт.')
-    r6 = Record(amount=1140, comment='Баночка чипсов.', date='23.07.2020')
+    r6 = Record(amount=1140, comment='Баночка чипсов.', date='27.07.2020')
 
     calories_calculator.add_record(r4)
     calories_calculator.add_record(r5)
