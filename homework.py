@@ -24,7 +24,7 @@ class Calculator:
         now = dt.date.today()
         for i in self.records:
             if week_ago <= i.date <= now:
-                week_cash += i.amount  
+                week_cash += i.amount
         return week_cash
 
     def today_remained(self):
@@ -51,7 +51,7 @@ class CaloriesCalculator(Calculator):
         if cals_remained > 0:
             return ('Сегодня можно съесть что-нибудь ещё, но'
                     f' с общей калорийностью не более {cals_remained} кКал')
-    
+
         return 'Хватит есть!'
 
 
@@ -76,15 +76,16 @@ class CashCalculator(Calculator):
 
         if currency in currencies:
             now_cash = cash_remained/currencies[currency][1]
-        
+
         cur_name = currencies[currency][0]
 
         if cash_remained > 0:
             return (f'На сегодня осталось {now_cash:.2f} {cur_name}')
-        
+
         minus_n = abs(now_cash)
         return ('Денег нет, держись:'
                 f' твой долг - {minus_n:.2f} {cur_name}')
+
 
 if __name__ == '__main__':
     cash_calculator = CashCalculator(1000)
