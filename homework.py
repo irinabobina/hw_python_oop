@@ -11,9 +11,9 @@ class Calculator:
 
     def get_today_stats(self):
         day_sum = 0
-        datetoday = dt.date.today()
+        date_today = dt.date.today()
         for i in self.records:
-            if i.date == datetoday:
+            if i.date == date_today:
                 day_sum += i.amount
         return day_sum
 
@@ -62,14 +62,14 @@ class CashCalculator(Calculator):
     def get_today_cash_remained(self, currency):
         cash_remained = self.today_remained()
 
-        if cash_remained == 0:
-            return 'Денег нет, держись'
-
         currencies = {
             'rub': ['руб', 1],
             'eur': ['Euro', CashCalculator.EURO_RATE],
             'usd': ['USD', CashCalculator.USD_RATE]
         }
+
+        if cash_remained == 0:
+            return 'Денег нет, держись'
 
         if currency not in currencies:
             return 'Незнакомая валюта'
@@ -77,15 +77,14 @@ class CashCalculator(Calculator):
         if currency in currencies:
             now_cash = cash_remained/currencies[currency][1]
         
-        prt_dict = [currencies[currency][0]]
-        
-        if cash_remained > 0:
-            return f'На сегодня осталось {now_cash:.2f} {prt_dict}'
+        cur_name = currencies[currency][0]
 
+        if cash_remained > 0:
+            return (f'На сегодня осталось {now_cash:.2f} {cur_name}')
+        
         minus_n = abs(now_cash)
         return ('Денег нет, держись:'
-                f' твой долг - {minus_n:.2f} {prt_dict}')
-
+                f' твой долг - {minus_n:.2f} {cur_name}')
 
 if __name__ == '__main__':
     cash_calculator = CashCalculator(1000)
